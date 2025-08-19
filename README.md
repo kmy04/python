@@ -58,10 +58,10 @@ a, b = map(float, input().split()) #실수형으로
 # 형 변환(type casting)
 
 
-### 예외 처리(Excepion)
+# 예외 처리(Excepion)
 
-### map
+# map
 
-### list
+# list
 
-### split()
+# split()
