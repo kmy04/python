@@ -51,8 +51,9 @@ a, b = input().split() #문자열로
 a, b = map(int, input().split()) #정수형으로
 a, b = map(float, input().split()) #실수형으로
 ```
-[map에 대한 설명] (##map)
-[split에 대한 설명] (##split())
+[map에 대한 설명] (#map)
+
+[split에 대한 설명] (#split())
 
 # 형 변환(type casting)
 
