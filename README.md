@@ -1,12 +1,11 @@
 # 입력과 출력
 
+### 예제
 ```py
 name = input("이름을 입력하세요: ")
 print("안녕하세요, " + name + "님!")
 print(f"안녕하세요, {name}님!")
 
-# input의 반환형은 항상 string이다.
-# 그렇기 때문에 숫자로 받고 싶으면 타입 캐스팅을 해줘야한다.
 try:
     number = int(input("숫자를 입력하세요: "))
 
@@ -20,3 +19,4 @@ try:
 except ValueError:
     print("숫자를 입력해야 합니다.")
 ```
+### 1️⃣ 기본 사용법
