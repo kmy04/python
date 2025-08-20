@@ -225,6 +225,7 @@ print(list(filter(lambda x: x % 2 == 0, nums)))  # [2, 4]
 + `tuple`, `str`같은 자료형은 불변(immutable)이라 함수형 스타일을 흉내낼 수 있음.
 
 [tuple에 대한 자세한 설명](#tuple)
+
 [str에 대한 자세한 설명](#str)
 
 #### (4) 람다(lambda) 표현식
