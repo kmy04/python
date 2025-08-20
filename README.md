@@ -65,16 +65,20 @@ print(type(MyClass))  # <class 'type'>
 + 수한의 함수 개념을 기반으로 한 프로그래밍 패러다임.
 
 + 핵심 특징:
-  1. **순수 함수 (pure fucntion)**
+ 1. **순수 함수 (pure fucntion)**
+
      같은 입력 -> 같은 출력, 부수 효과(side effect)가 없음.
 
-  2. **불변성 (immutability)**
+ 2. **불변성 (immutability)**
+
      데이터를 직접 변경하지 않고 새로운 데이터를 만들어냄.
 
-  3. **고차 함수 (higher-order function)**
+ 3. **고차 함수 (higher-order function)**
+
      함수를 값 처럼 다룰 수 있음 (변수에 담거나 다른 함수에 전달 가능)
 
-  4. **함수 조합(function composition)**
+ 4. **함수 조합(function composition)**
+
      작은 함수들을 합쳐서 큰 동작을 만듦.
 
 [함수형 코드 보기](#함수형(Functional)-방식)
