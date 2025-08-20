@@ -445,6 +445,10 @@ a, b = map(float, input().split()) #실수형으로
 
 # list
 
+# tuple
+
+# str
+
 # split()
 
 
