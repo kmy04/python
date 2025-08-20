@@ -237,7 +237,7 @@ square = lambda x: x * x
 print(square(5))  # 25
 ```
 
-[더 자세한 설명](#람다lambda란)
+[람다 표현식 더 자세한 설명](#람다lambda란)
 
 #### (5) C++과 비교
 
