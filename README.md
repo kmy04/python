@@ -100,11 +100,11 @@ print(type(MyClass))  # <class 'type'>
 
     즉, 원본 데이터는 그대로 유지
 
-    **파이썬에서 불변(immutable) 자료형
+    **파이썬에서 불변(immutable) 자료형**
 
     + `int`, `float`, `str`, `tuple`, `frozenset`
    
-    **예시 (가변성 때문에 문제되는 경우)
+    **예시 (가변성 때문에 문제되는 경우)**
 
     ```python
     nums = [1, 2, 3]
@@ -135,6 +135,7 @@ print(type(MyClass))  # <class 'type'>
     함수를 값 처럼 다룰 수 있음 (변수에 담거나 다른 함수에 전달 가능)
 
     map자체가 예시임
+    [map에 대한 설명 바로가기](#map)
 
  7. **함수 조합(function composition)**
 
