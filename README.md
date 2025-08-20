@@ -185,6 +185,7 @@ print(type(MyClass))  # <class 'type'>
     
 
 [함수형 코드 보기](#함수형(Functional)-방식)
+
 [객체지향 코드 보기](#객체지향(OOP)-방식)
 
 ### 2. Python이 함수형 언어처럼 불리는 이유
