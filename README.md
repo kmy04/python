@@ -1,5 +1,3 @@
-python을 공부하기 전에 기억해야될 것.
-
 **python은 완전히 객체 지향 언어(Object-Oriented Language)** 이다.
 
 ## 1. Python에서 객체(Object)의 개념
