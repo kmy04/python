@@ -1517,22 +1517,22 @@ slot 3 -> entry 1 -> "b":20
 
 **흐름**
 
-  1. `"a"`를 넣을 때
+1. `"a"`를 넣을 때
 
-    + slot = hash("a") % table_size = 0
+	+ slot = hash("a") % table_size = 0
 
-    + dk_indices[0] = 0 → entries[0]에 "a":10 저장
+	+ dk_indices[0] = 0 → entries[0]에 "a":10 저장
 
-  2. `"b"`를 넣을 때
+2. `"b"`를 넣을 때
 
-    + slot = hash("b") % table_size = 3
+	+ slot = hash("b") % table_size = 3
 
-    + dk_indices[3] = 1 → entries[1]에 "b":20 저장
+	+ dk_indices[3] = 1 → entries[1]에 "b":20 저장
 
-  3. `"c"`를 넣을 때
+3. `"c"`를 넣을 때
 
-    + slot = hash("c") % table_size = 0 → 이미 "a" 있음 (충돌)
+	+ slot = hash("c") % table_size = 0 → 이미 "a" 있음 (충돌)
 
-    + 다음 빈 슬롯 slot 1 사용
+	+ 다음 빈 슬롯 slot 1 사용
 
-    + dk_indices[1] = 2 → entries[2]에 "c":30 저장
+	+ dk_indices[1] = 2 → entries[2]에 "c":30 저장
