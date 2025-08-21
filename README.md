@@ -1091,125 +1091,7 @@ obj2.__dict__ (PyDictObject)
 
 #### **3)** `ma_keys` (`PyDictKeysObject*`)
 
- **키 테이블의 본체**이다. 내부에:
-
-1. **인덱스 테이블**(`dk_indices`):
-  
- + `dk_indices`는 **해시 -> 엔트리 배열(`entries`) 인덱스로**로 바로 매핑하는 테이블이다.
-
- + 실제 값이나 키 자체는 여기에 없고, **인덱스만 저장**한다.
-
- + 즉, 해시값을 계산하면 `dk_indices`를 통해 **엔트리 배열에서 어느 위치를 봐야 하는지** 바로 알 수 있다.
-
-**구조 예시**
-
-```text
-dk_indices = [0, 2, EMPTY, 1, ...]  # 인덱스 테이블
-entries = [ ("a", 10), ("b", 20), ("c", 30) ]  # 엔트리 배열
-```
-
-+ 해시값을 이용해 `dk_indices`에서 엔트리 번호를 찾아서 `entries`를 접근
-
-+ **값과 키는 `entries` 안에 따로 저장**되고 `di_indices`는 "인덱스 포인터"만 가짐.
-
-**dk_indices에 값이 왜 저런 형태지?**
-
-#### 오픈 어드레싱(Open Addressing) 기반
-
- 오픈 어드레싱은 **충돌 해결 방법**중 하나이다.
-
- **문제**
-
- + 해시값이 다른 키와 겹칠 수 있음(hash colision)
-
- + 예: `hash("a) % table_size = 1`
-
-   `hash("b") % table_size = 1` -> 충돌
-
-**해결 (오픈 어드레싱)**
-
-+ 충돌이 발생하면 **다음 빈 슬롯을 찾는 방식**으로 처리
-
-+ CPython은 **perturb + probing** 기법 사용:
-
-  + 해시값 + perturb 변수를 이용해 점진적으로 다른 슬롯으로 이동
- 
-  + 충돌이 없어질 때까지 반복
- 
-값: **entries 배열의 인덱스
-
-EMPTY: **해당 슬롯이 비어 있음** (아직 키 없음)
-
-DUMMY: **삭제된 키 자리** (탐색용 마커)
-
-즉, `dk_indices[i] = j`라면
-
- 해시 -> 슬롯 `i` -> entries[j]를 보면 실제 키와 값(Combined dict) 또는 키만(Split dict)을 찾을 수 있
-
-**예시 (간단화)**
-
-```python
-d = {"a": 10, "b": 20, "c": 30}
-```
-
-+ `entries` 배열:
-
-| index | key | value |
-| ----- | --- | ----- |
-| 0     | "a" | 10    |
-| 1     | "b" | 20    |
-| 2     | "c" | 30    |
-
-
-+ `dk_indices` 배열(단순화):
-
-| slot | dk\_indices\[slot] | 의미                |
-| ---- | ------------------ | ----------------- |
-| 0    | 0                  | entries\[0] → "a" |
-| 1    | 2                  | entries\[2] → "c" |
-| 2    | EMPTY              | 비어 있음             |
-| 3    | 1                  | entries\[1] → "b" |
-
-
-+ `dk_indices`의 **인덱스 값(0, 1, 2) = entries 배열에서 키가 실로 저장된 위치**
-
-**그림으로 표현하면**
-
-```rust
-dk_indices (slots) : [ 0 , 2 , EMPTY , 1 ]
-                       |   |         |
-entries 배열          : [ "a", "b", "c" ]
-                         ^   ^    ^
-                         |   |    |
-slot 0 -> entry 0 -> "a":10
-slot 1 -> entry 2 -> "c":30
-slot 2 -> EMPTY (빈 슬롯)
-slot 3 -> entry 1 -> "b":20
-```
-
-**흐름**
-
-  1. `"a"`를 넣을 때
-
-    + slot = hash("a") % table_size = 0
-
-    + dk_indices[0] = 0 → entries[0]에 "a":10 저장
-
-  2. `"b"`를 넣을 때
-
-    + slot = hash("b") % table_size = 3
-
-    + dk_indices[3] = 1 → entries[1]에 "b":20 저장
-
-  3. `"c"`를 넣을 때
-
-    + slot = hash("c") % table_size = 0 → 이미 "a" 있음 (충돌)
-
-    + 다음 빈 슬롯 slot 1 사용
-
-    + dk_indices[1] = 2 → entries[2]에 "c":30 저장
-
-2. **엔트리 배열**(`entries`): 각 엔트리에 키 객체와 키 해시 (그리고 combined일 때는 값까지) 저
+[내용이 너무 길어서 따로 뺌](#makeys-PyDictKeysObject)
 
 #### **4) `ma_values` (`Pyobject **`)**
 
@@ -1530,3 +1412,127 @@ print(result)  # [4, 16, 36]
 + OOP(Object-Oriented Programing) -> 구조화, 재사용성, 캡슐화에 강
 
 + FP(Functional Programming) -> 데이터 변환과 처리 흐름을 간결하게 표현 가능
+
+# 내용이 너무 길어져서 따로 빼놓은 것
+
+## ma_keys (PyDictKeysObject*)
+
+ **키 테이블의 본체**이다. 내부에:
+
+1. **인덱스 테이블**(`dk_indices`):
+  
+ + `dk_indices`는 **해시 -> 엔트리 배열(`entries`) 인덱스로**로 바로 매핑하는 테이블이다.
+
+ + 실제 값이나 키 자체는 여기에 없고, **인덱스만 저장**한다.
+
+ + 즉, 해시값을 계산하면 `dk_indices`를 통해 **엔트리 배열에서 어느 위치를 봐야 하는지** 바로 알 수 있다.
+
+**구조 예시**
+
+```text
+dk_indices = [0, 2, EMPTY, 1, ...]  # 인덱스 테이블
+entries = [ ("a", 10), ("b", 20), ("c", 30) ]  # 엔트리 배열
+```
+
++ 해시값을 이용해 `dk_indices`에서 엔트리 번호를 찾아서 `entries`를 접근
+
++ **값과 키는 `entries` 안에 따로 저장**되고 `di_indices`는 "인덱스 포인터"만 가짐.
+
+**dk_indices에 값이 왜 저런 형태지?**
+
+#### 오픈 어드레싱(Open Addressing) 기반
+
+ 오픈 어드레싱은 **충돌 해결 방법**중 하나이다.
+
+ **문제**
+
+ + 해시값이 다른 키와 겹칠 수 있음(hash colision)
+
+ + 예: `hash("a) % table_size = 1`
+
+   `hash("b") % table_size = 1` -> 충돌
+
+**해결 (오픈 어드레싱)**
+
++ 충돌이 발생하면 **다음 빈 슬롯을 찾는 방식**으로 처리
+
++ CPython은 **perturb + probing** 기법 사용:
+
+  + 해시값 + perturb 변수를 이용해 점진적으로 다른 슬롯으로 이동
+ 
+  + 충돌이 없어질 때까지 반복
+ 
+값: **entries 배열의 인덱스
+
+EMPTY: **해당 슬롯이 비어 있음** (아직 키 없음)
+
+DUMMY: **삭제된 키 자리** (탐색용 마커)
+
+즉, `dk_indices[i] = j`라면
+
+ 해시 -> 슬롯 `i` -> entries[j]를 보면 실제 키와 값(Combined dict) 또는 키만(Split dict)을 찾을 수 있
+
+**예시 (간단화)**
+
+```python
+d = {"a": 10, "b": 20, "c": 30}
+```
+
++ `entries` 배열:
+
+| index | key | value |
+| ----- | --- | ----- |
+| 0     | "a" | 10    |
+| 1     | "b" | 20    |
+| 2     | "c" | 30    |
+
+
++ `dk_indices` 배열(단순화):
+
+| slot | dk\_indices\[slot] | 의미                |
+| ---- | ------------------ | ----------------- |
+| 0    | 0                  | entries\[0] → "a" |
+| 1    | 2                  | entries\[2] → "c" |
+| 2    | EMPTY              | 비어 있음             |
+| 3    | 1                  | entries\[1] → "b" |
+
+
++ `dk_indices`의 **인덱스 값(0, 1, 2) = entries 배열에서 키가 실로 저장된 위치**
+
+**그림으로 표현하면**
+
+```rust
+dk_indices (slots) : [ 0 , 2 , EMPTY , 1 ]
+                       |   |         |
+entries 배열          : [ "a", "b", "c" ]
+                         ^   ^    ^
+                         |   |    |
+slot 0 -> entry 0 -> "a":10
+slot 1 -> entry 2 -> "c":30
+slot 2 -> EMPTY (빈 슬롯)
+slot 3 -> entry 1 -> "b":20
+```
+
+**흐름**
+
+  1. `"a"`를 넣을 때
+
+    + slot = hash("a") % table_size = 0
+
+    + dk_indices[0] = 0 → entries[0]에 "a":10 저장
+
+  2. `"b"`를 넣을 때
+
+    + slot = hash("b") % table_size = 3
+
+    + dk_indices[3] = 1 → entries[1]에 "b":20 저장
+
+  3. `"c"`를 넣을 때
+
+    + slot = hash("c") % table_size = 0 → 이미 "a" 있음 (충돌)
+
+    + 다음 빈 슬롯 slot 1 사용
+
+    + dk_indices[1] = 2 → entries[2]에 "c":30 저장
+
+2. **엔트리 배열**(`entries`): 각 엔트리에 키 객체와 키 해시 (그리고 combined일 때는 값까지) 저장
