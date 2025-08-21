@@ -1075,11 +1075,11 @@ obj2.__dict__ (PyDictObject)
 
 #### 필드별 역할
 
-**1)** `ob_base`
+#### **1)** `ob_base`
 
 + 모든 `PyObject`가 가지는 헤더(참조 카운트, 타입 포인터).
 
-**2)** `ma_used`
+#### **2)** `ma_used`
 
 + 이 dict에서 **실제로 값이 설정된 항목 수**이다.
 
@@ -1089,7 +1089,7 @@ obj2.__dict__ (PyDictObject)
 
   + split dict에서는 **키 슬롯은 존재하지만 그 값이 아직 설정되지 않아 NULL일 수** 있어서 `ma_used`가 더 작을 수 있다.
 
-**3)** `ma_keys` (`PyDictKeysObject*`)
+#### **3)** `ma_keys` (`PyDictKeysObject*`)
 
 **키 테이블의 본체**이다. 내부에:
 
@@ -1210,6 +1210,14 @@ slot 3 -> entry 1 -> "b":20
     + dk_indices[1] = 2 → entries[2]에 "c":30 저장
 
 2. **엔트리 배열**(`entries`): 각 엔트리에 키 객체와 키 해시 (그리고 combined일 때는 값까지) 저
+
+#### **4) `ma_values` (`Pyobject **`)**
+
++ **split dict에서만 사용**된다.
+
++ **값만** 담는 별도의 포인터 배열로, **인덱스가 `ma_keys`의 엔트리 인덱스와 1:1로 대응**한다.
+
++ combined dict에서는 `NULL`이다. (값이 `ma_keys` 엔트리 안에 같이 있음).
 
 ## 4. 가변 객체 vs 불변 객체
 
