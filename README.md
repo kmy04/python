@@ -1091,7 +1091,7 @@ obj2.__dict__ (PyDictObject)
 
 #### **3)** `ma_keys` (`PyDictKeysObject*`)
 
-[내용이 너무 길어서 따로 뺌](#makeys-PyDictKeysObject)
+[내용이 너무 길어서 따로 뺌](#ma_keys-PyDictKeysObject)
 
 #### **4) `ma_values` (`Pyobject **`)**
 
