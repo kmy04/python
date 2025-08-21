@@ -968,7 +968,7 @@ typedef struct {
 
  + dict는 두 가지 레이아웃을 가질 수 있다.
 
-1. **Combined dict**
+##### 1. Combined dict
 
  + 키와 값이 **같은 엔트리 배열**에 함께 저장됨. `ma_values == NULL`
 
@@ -1003,7 +1003,7 @@ PyDictObject
 
  + 독립적으로 생성된 딕셔너리
 
-2. **Split dict (key-sharing dict)**
+##### 2. **Split dict (key-sharing dict)**
 
  + 키 테이블은 **공유**하고 값은 **별도 배열**에 저장. `ma_values != NULL`
 
